@@ -1,13 +1,17 @@
 <?php
 
 class Guitar {
-  var $material = "wood";
-  var $numberOfStrings = 6;
-  var $usesAmplifier = false;
-  var $usesPick = true;
-  var $stringType;
+  private $material = "wood";
+  private $numberOfStrings = 6;
+  protected $usesAmplifier = false;
+  protected $usesPick = true;
+  protected $stringType;
+  
+  public function setAmplifier($value) {
+    $this->usesAmplifier = $value;
+  }
 
-  function distortion(){
+  public function distortion(){
     if ($this->usesAmplifier) {
       $distortionString = "can produce distortion";
     } else {
@@ -15,21 +19,22 @@ class Guitar {
     }
     return $distortionString;
   }
+
 }
 
 class Classical extends Guitar{
-  var $stringType = "nylon";
-  var $usesPick = false;
+  protected $stringType = "nylon";
+  protected $usesPick = false;
 }
 
 class Acoustic extends Guitar {
-  var $stringType = "bronze";
-  var $usesAmplifier = true;
+  protected $stringType = "bronze";
+  protected $usesAmplifier = true;
 }
 
 class Electric extends Guitar {
-  var $stringType = "metal";
-  var $usesAmplifier = true;
+  protected $stringType = "metal";
+  protected $usesAmplifier = true;
 }
 
 $cordoba = new Classical;
@@ -38,7 +43,7 @@ echo "<p>This guitar " . $cordoba->distortion() . "</p>";
 $taylor = new Acoustic;
 echo "<p>This guitar " . $taylor->distortion() . "</p>";
 $martin = new Acoustic;
-$martin->usesAmplifier = false;
+$martin->setAmplifier(false);
 echo "<p>This guitar " . $martin->distortion() . "</p>";
 
 $fender = new Electric;
