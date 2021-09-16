@@ -11,8 +11,10 @@ class Bird {
     public static $eggNum = 0;  
 
     public static function create(){
-        static::$instanceCount++;
-        return new Bird;
+        $className = get_called_class();
+        $obj = new $className;
+        self::$instanceCount++;
+        return $obj;
     }
 
     public static function can_fly() {
@@ -26,12 +28,10 @@ class YellowBelliedFlyCatcher extends Bird {
     public static $diet = "mostly insects.";
     public static $song = "flat chilk";
     public static $eggNum = "3-4, sometimes 5";
-    public static $instanceCount = 0;
 }
 
 class Kiwi extends Bird {
     public static $name = "kiwi";
     public static $diet = "omnivorous";
     public static $flying = false;
-    public static $instanceCount = 0;
 }
