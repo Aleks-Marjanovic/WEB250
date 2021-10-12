@@ -2,10 +2,28 @@
 
  class Bird {
 
+    // ------ START OF ACTIVE RECORD CODE ------ //
+    static protected $database;
+
+    static public function setDatabase($database) {
+        self::$database = $database;
+    }
+
+    static public function findBySql($stmt) {
+        return self::$database->query($stmt);
+    }
+
+    static public function findAll() {
+        $stmt = "SELECT * FROM birds";
+        return self::findBySql($stmt);
+    }
+    // ------ END OF PUBLIC RECORD CODE ------//
+
+
     public $common_name;
     public $habitat;
     public $food;
-    public $nest_palcement;
+    public $nest_placement;
     public $behavior;
     public $backyard_tips;
     protected $conservation_id;
@@ -21,7 +39,7 @@
         $this->common_name = $args['common_name'] ?? '';
         $this->habitat = $args['habitat'] ?? '';
         $this->food = $args['food'] ?? '';
-        $this->nest_palcement = $args['nest_palcement'] ?? '';
+        $this->nest_placement = $args['nest_placement'] ?? '';
         $this->behavior = $args['behavior'] ?? '';
         $this->backyard_tips = $args['backyard_tips'] ?? '';
         $this->conservation_id = $args['conservation_id'] ?? '';
@@ -36,6 +54,4 @@
             return "Unknown";
         }
     }
-
-
 }

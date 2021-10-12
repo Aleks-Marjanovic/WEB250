@@ -39,7 +39,7 @@ $bird_array = $parser->parse();
         <td><?php echo $bird->common_name; ?></td>
         <td><?= $bird->habitat; ?></td>
         <td><?= $bird->food; ?></td>
-        <td><?= $bird->nest_palcement; ?></td>
+        <td><?= $bird->nest_placement; ?></td>
         <td><?= $bird->behavior; ?></td>
         <td><?php echo $bird->conservation(); ?></td>
         <td><?= $bird->backyard_tips; ?></td>
@@ -51,10 +51,15 @@ $bird_array = $parser->parse();
 
       // This code is from the PDO tutorial from asgn05
 
-      $stmt = $database->query("SELECT * FROM birds");
-      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo 'Name: ' . $row['common_name'] . '<br>';
-      }
+      // $stmt = Bird::$database->query("SELECT * FROM birds");
+      // while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      //   echo 'Name: ' . $row['common_name'] . '<br>';
+      // }
+
+      $result = Bird::findAll();
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+      echo "Name: " . $row['common_name'] . '<br>';
+      };
     ?>
   </div>
 
