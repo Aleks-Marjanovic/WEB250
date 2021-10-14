@@ -19,12 +19,14 @@
         <th>Behavior</th>
         <th>Conservation Level</th>
         <th>Backyard Tips</th>
+        <th>&nbsp;</th>
       </tr>
 
 
 <?php
-$parser = new ParseCSV(PRIVATE_PATH . '/wnc-birds.csv');
-$bird_array = $parser->parse();
+// $parser = new ParseCSV(PRIVATE_PATH . '/wnc-birds.csv');
+// $bird_array = $parser->parse();
+$birds = Bird::findAll();
 // echo '<pre>';
 // print_r($bird_array);
 // echo '</pre>';
@@ -33,8 +35,8 @@ $bird_array = $parser->parse();
 
 
 
-      <?php foreach($bird_array as $args) { ?>
-     <?php  $bird = new Bird($args);   ?>
+      <?php foreach($birds as $bird) { ?>
+
       <tr>
         <td><?php echo $bird->common_name; ?></td>
         <td><?= $bird->habitat; ?></td>
@@ -43,6 +45,7 @@ $bird_array = $parser->parse();
         <td><?= $bird->behavior; ?></td>
         <td><?php echo $bird->conservation(); ?></td>
         <td><?= $bird->backyard_tips; ?></td>
+        <td><a href="detail.php?id="<?php echo $bird->id; ?>>View</a></td>
       </tr>
 <?php } ?>
     </table>
@@ -56,10 +59,10 @@ $bird_array = $parser->parse();
       //   echo 'Name: ' . $row['common_name'] . '<br>';
       // }
 
-      $result = Bird::findAll();
-      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-      echo "Name: " . $row['common_name'] . '<br>';
-      };
+      // $result = Bird::findAll();
+      // while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+      // echo "Name: " . $row['common_name'] . '<br>';
+      // };
     ?>
   </div>
 

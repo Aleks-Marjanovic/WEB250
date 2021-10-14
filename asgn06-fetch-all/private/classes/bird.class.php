@@ -9,17 +9,49 @@
         self::$database = $database;
     }
 
-    static public function findBySql($stmt) {
-        return self::$database->query($stmt);
+    static public function findBySql($sql) {
+        $result =  self::$database->query($sql);
+        if(!$result) {
+            exit("Database query failed.");
+        }
+        $object_array = [];
+        while($record = $result->fetch(PDO::FETCH_ASSOC)) {
+            $object_array[] = self::instantiate($record);
+        }
+        return $object_array;
     }
 
     static public function findAll() {
-        $stmt = "SELECT * FROM birds";
-        return self::findBySql($stmt);
+        $sql = "SELECT * FROM birds";
+        return self::findBySql($sql);
+    }
+
+    static public function findByID($id) {
+        // $sql = "SELECT * FROM birds ";
+        // $sql .= "WHERE id='" . $id . "'";
+        $sql = self::$database->prepare("SELECT * FROM birds WHERE id = :id");
+        $sql->bindParam(':id', $id);
+        $sql->execute();
+        $obj_array = self::findBySql($sql);
+        if(!empty($obj_array)) {
+            return array_shift($obj_array);
+        } else {
+            return false;
+        }
+    }
+
+    static protected function instantiate($record) {
+        $object = new self;
+        foreach($record as $property => $value) {
+            if(property_exists($object, $property)) {
+                $object->$property = $value;
+            }
+        }
+        return $object;
     }
     // ------ END OF PUBLIC RECORD CODE ------//
 
-
+    public $id;
     public $common_name;
     public $habitat;
     public $food;
@@ -36,6 +68,7 @@
     ];
 
     public function __construct($args=[]) {
+        $this->id = $args['id'] ?? '';
         $this->common_name = $args['common_name'] ?? '';
         $this->habitat = $args['habitat'] ?? '';
         $this->food = $args['food'] ?? '';
