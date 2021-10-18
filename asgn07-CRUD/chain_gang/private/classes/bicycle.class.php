@@ -4,6 +4,7 @@ class Bicycle {
 
   // ----- START OF ACTIVE RECORD CODE ------
   static protected $database;
+  static protected $db_columns = ['id', 'brand', 'model', 'year', 'category', 'color', 'gender', 'price', 'weight_kg', 'condition_id', 'description'];
 
   static public function set_database($database) {
     self::$database = $database;
@@ -54,6 +55,52 @@ class Bicycle {
     return $object;
   }
 
+  /**
+   * Instance method which creates a new database object based on the input
+   *
+   * @return boolean 
+   */
+  public function create() {
+    $attributes = $this->sanitized_attributes();
+    $sql = "INSERT INTO bicycles (";
+    $sql .= join(', ', array_keys($attributes));
+    $sql .= ") VALUES ('";
+    $sql .= join("', '", array_values($attributes));
+    $sql .= "')";
+    $result = self::$database->query($sql);
+    if($result) {
+      $this->id = self::$database->insert_id;
+    }
+    return $result;
+  }
+
+  /**
+   * Creates an array of attributes in a form of key-value pair
+   *
+   * @return array
+   */
+  public function attributes() {
+    $attributes = [];
+    foreach(self::$db_columns as $column) {
+      if($column == 'id') {continue;}
+      $attributes[$column] = $this->$column;
+    }
+    return $attributes;
+  }
+
+  /**
+   * Takes the values from the attributes array and sanitizes them to prevent SQL injection
+   *
+   * @return array
+   */
+  protected function sanitized_attributes() {
+    $sanitized = [];
+    foreach($this->attributes() as $key => $value) {
+      $sanitized[$key] = self::$database->escape_string($value);
+    }
+    return $sanitized;
+  }
+
   // ----- END OF ACTIVE RECORD CODE ------
 
   public $id;
@@ -65,8 +112,8 @@ class Bicycle {
   public $description;
   public $gender;
   public $price;
-  protected $weight_kg;
-  protected $condition_id;
+  public $weight_kg;
+  public $condition_id;
 
   public const CATEGORIES = ['Road', 'Mountain', 'Hybrid', 'Cruiser', 'City', 'BMX'];
 
