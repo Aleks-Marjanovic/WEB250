@@ -1,6 +1,6 @@
 <?php
 
-class DatabaseObject {
+class DatabaseObject{
 
   static protected $database;
   static protected $table_name = "";

@@ -32,7 +32,8 @@
   // Load class definitions manually
 
   // -> Individually
-  // require_once('classes/bicycle.class.php');
+  require_once('classes/DatabaseObject.class.php');
+  require_once('classes/Bicycle.class.php');
 
   // -> All classes in directory
   foreach(glob('classes/*.class.php') as $file) {
