@@ -15,26 +15,20 @@
         <th>Common Name</th>
         <th>Habitat</th>
         <th>Food</th>
-        <th>Nest Placement</th>
-        <th>Behavior</th>
         <th>Conservation Level</th>
         <th>Backyard Tips</th>
       </tr>
 
 <?php
 
-$parser = new ParseCSV(PRIVATE_PATH . '/wnc-birds.csv');
-$bird_array = $parser->parse();
+$birds = Bird::find_all();
 
 ?>
-      <?php foreach($bird_array as $args) { ?>
-        <?php $bird = new Bird($args); ?>
+      <?php foreach($birds as $bird) { ?>
       <tr>
         <td><?php echo h($bird->common_name); ?></td>
         <td><?php echo h($bird->habitat); ?></td>
         <td><?php echo h($bird->food); ?></td>
-        <td><?php echo h($bird->nest_placement); ?></td>
-        <td><?php echo h($bird->behavior); ?></td>
         <td><?php echo h($bird->conservation_level()); ?></td>
         <td><?php echo h($bird->backyard_tips); ?></td>
       </tr>

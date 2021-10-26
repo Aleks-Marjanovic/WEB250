@@ -23,11 +23,15 @@
   define("WWW_ROOT", $doc_root);
 
   require_once('functions.php');
-
+  require_once('db_credentials.php');
+  require_once('status_error_functions.php');
+  require_once('validation_functions.php');
+  require_once('database_functions.php');
   // Load class definitions manually
 
   // -> Individually
-  // require_once('classes/bicycle.class.php');
+  require_once('classes/DatabaseObject.class.php');
+  require_once('classes/Bird.class.php');
 
   // -> All classes in directory
   foreach(glob('classes/*.class.php') as $file) {
@@ -41,5 +45,8 @@
     }
   }
   spl_autoload_register('my_autoload');
+
+  $database = db_connect();
+  DatabaseObject::set_database($database);
 
 ?>
